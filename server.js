@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 // var config = require ('./scripts/config');
 // var models = require ('./scripts/models');
 var querystring = require('querystring');
-var PORT = 3000;
+// var PORT = 3000;
 var Yelp= require('yelp');
 // var DB = config.DB;
 var searchResults;
@@ -148,4 +148,5 @@ app.post('/search',function(req,res){
 
 app.listen(PORT,function(){
   console.log('server started');
+  console.log('on' + PORT);
 });
