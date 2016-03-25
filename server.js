@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 // var config = require ('./scripts/config');
 // var models = require ('./scripts/models');
 var querystring = require('querystring');
-// var PORT = 3000;
+var PORT = process.env.PORT;
 var Yelp= require('yelp');
 // var DB = config.DB;
 var searchResults;
