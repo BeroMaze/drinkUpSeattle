@@ -81,6 +81,7 @@ header{
   margin-top: 1%;
   margin-bottom: 1%;
   font-family: 'Candal', sans-serif;
+  cursor: pointer;
   /*border: solid red;*/
 }
 
@@ -166,6 +167,7 @@ main{
 #searchBox{
   margin: auto;
   margin-top: 10%;
+  -moz-margin-top: 50px;
   margin-bottom: 1%;
   background: rgba(0, 0, 0, 0.8);
   color: rgba(255, 255, 255, 0.90);
@@ -264,6 +266,7 @@ main{
   margin-top: 10px;
   cursor: pointer;
 }
+
 .resultNumber{
   margin-top: 10px;
   margin-bottom: 0;

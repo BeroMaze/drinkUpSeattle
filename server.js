@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 // var config = require ('./scripts/config');
 // var models = require ('./scripts/models');
 var querystring = require('querystring');
-var PORT = process.env.PORT || 3000;
+var PORT = 3000;
 var Yelp= require('yelp');
 // var DB = config.DB;
 var searchResults;
@@ -34,7 +34,7 @@ app.get('/', function(req, res) {
 
 app.get('/search/', function(req, res) {
   res.sendFile('index.html', {root:__dirname + '/'});
-        });
+});
 
 app.get("/search/:usersearch", function(req, res){
   res.sendFile('index.html', {root:__dirname + '/'});
@@ -85,6 +85,7 @@ app.post('/search',function(req,res){
   // console.log('the string:');
   // console.log(searchString);
   if(userSearchReq.reqNeighborhood===undefined){
+    console.log(userSearchReq.currectLoc);
     yelp.search(
       {
         term:'happy hour '+ userSearchReq.terms,

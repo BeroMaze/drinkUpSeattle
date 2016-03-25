@@ -1,5 +1,7 @@
   var map;
   var locationId;
+  var resultsUrl;
+  var locationsName;
 
   function initMap(){
     function map(){
@@ -18,7 +20,8 @@
       directionsDisplay.setPanel(document.getElementById('turnByTurn'));
       calculateAndDisplayRoute(directionsService, directionsDisplay);
       document.getElementById('mode').addEventListener('change', function() {
-      calculateAndDisplayRoute(directionsService, directionsDisplay);
+        $('#turnByTurn').empty();
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
       });
     }
     map();
@@ -61,14 +64,7 @@
     }
   }
 
-function mapFunction() {
-  $('.resultBox').hover(function() {
-    $(this).toggleClass('pulse animated');
-  });
-
-  $('.resultsInfo').on('click', function(event) {
-    locationId = $(this).find('.resultAddress').text();
-    console.log(locationId);
+  function GotToMap() {
     mapSize();
     $('#resultsOuterBox').addClass('slideOutDown animated');
     $('#searchBox').addClass('flipOutX animated').removeClass('flipInX');
@@ -76,10 +72,13 @@ function mapFunction() {
       $('#resultsOuterBox').hide();
       $('#searchBox').hide();
       $('#mapView').addClass('slideInDown animated').removeClass('slideOutUp').show();
+      console.log(locationsName);
+      $('#locationName').text(locationsName);
       $('#backButton').addClass('flipInX animated').removeClass('flipOutX').show();
       initMap();
     }, 470);
     $('#backButton').on('click', function(event) {
+      window.history.replaceState(resultsInfo, resultsInfo, resultsInfo);
       $('#mapView').addClass('slideOutUp').removeClass('slideInDown');
       $('#backButton').addClass('flipOutX').removeClass('flipInX');
       setTimeout(function(){
@@ -88,10 +87,28 @@ function mapFunction() {
         $('#searchBox').addClass('flipInX').removeClass('flipOutX').show();
         $('#resultsOuterBox').removeClass('slideOutDown').show();
       }, 470);
-
     });
+  }
+
+function mapFunction() {
+  $('.resultBox').hover(function() {
+    $(this).toggleClass('pulse animated');
+  });
+
+  $('.resultsInfo').on('click', function(event) {
+    locationId = $(this).find('.resultAddress').text();
+    function resultsinfoFunction() {
+      return location.href;
+    }
+    resultsInfo = resultsinfoFunction();
+    var clickedLocation = $(this).parent().parent().attr("id");
+    locationsName = $('#'+clickedLocation).find('.resultTitle').text();
+    console.log(locationsName);
+    window.history.replaceState(location.href+"&locationID="+clickedLocation,location.href+"&locationID="+clickedLocation,location.href+"&locationID="+clickedLocation);
+    GotToMap();
   });
 }
+
   $(window).resize(function() {
       mapSize();
     });
