@@ -149,5 +149,4 @@ app.post('/search',function(req,res){
 
 app.listen(PORT,function(){
   console.log('server started');
-  console.log('port' + PORT);
 });
