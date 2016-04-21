@@ -5,6 +5,9 @@ var char = 0;
 var num=0;
 var time=0;
 var endFlag=false;
+// var thisID;
+// var nowTime;
+
 $('#searchBox').attr('placeholder', '|');
 var humanize = Math.round(Math.random() * (200 - 24)) + 30;
 function typeIt(x) {
@@ -58,11 +61,6 @@ typeOut();
 function removeCursor(){
   $('#searchBox').attr('placeholder', $('#searchBox').attr('placeholder').slice(0, -1));
 }
-
-
-$("#searchBox").click(function(event) {
-  getLocation();
-});
 
 $("#searchBox").keyup(function(event) {
   searchParser.bind(this)();
@@ -141,6 +139,7 @@ function scrollHappening() { /// insure to bind this to the element being callin
       console.log( "success" );
     })
       .done(function(data) {
+        $('#resultsOuterBox').show();
         console.log("Server Success" );
         // console.log(data);
         if (data.hasOwnProperty('statusCode')){
@@ -190,21 +189,43 @@ function scrollHappening() { /// insure to bind this to the element being callin
           newResults.forEach(function(each) {
             var html = compileTemplate(each);
             $('#results').append(html);
+            var eachId = each.id;
+            each.happyHourTimes.forEach(function(index){
+              $('#'+eachId+' .happyHoursIcons').append("<p class='timesIcon "+index.day+"' value='"+index.time+"'>"+index.day+"</p>");
+            });
             $('#results').addClass('fadeInUpBig animated');
+            var times = $('#'+eachId+' .'+day).attr('value');
+            $('#'+eachId+' .happyHTimes').text(times);
           });
           happening.forEach(function(x){
             $(x).find('.hHDropDown').addClass('happeningNow');
             $(x).find('.nowPic').css('display', 'block');
           });
-          mapFunction();
+          $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
           endFlag = false;
         }
+        mapFunction();
+        $('.timesIcon').unbind('mouseenter mouseleave');
+        daysHover();
       });
   }
 }
 
 if((window.location.href.indexOf('search/index.html') > -1)||(window.location.href.indexOf('search/?undefined') > -1)){
-  window.history.pushState("/","/","/");
+  window.open("/", '_self');
+}
+
+
+if((window.location.href.indexOf('about') > -1)||(window.location.href.indexOf('about/') > -1)){
+  $('#iframeAPIplayer').css('display', 'none');
+  $('#iframeAPIplayer').remove();
+  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  $('.loadingImage').hide();
+  $('.backgroundVid').hide();
+  $('#searchBoxWrapper').hide();
+  $('#outerBox').hide();
+  $('#about-page').css('display', 'flex');
+  $('#about-page').show('slow');
 }
 
 if(window.location.href.indexOf('search/?') > -1){
@@ -220,17 +241,18 @@ if(window.location.href.indexOf('search/?') > -1){
   else {
   User.reqNeighborhood = getParameterByName('reqNeighborhood');
   }
-  if (User.currectLoc===""){
-    User.currectLoc=undefined;
-    }
-  else{
+  // if (User.currectLoc===""){
+  //   console.log('blank string');
+  //   User.currectLoc=undefined;
+  //   }
+  // else{
     User.currectLoc = getParameterByName('currectLoc');
-  }
+    console.log(User.currectLoc);
+  // }
   console.log(User.currectLoc);
   if (User.currectLoc !== undefined) {
     userLat=User.currectLoc.split(',')[0];
     userLong=User.currectLoc.split(',')[1];
-    console.log(User.currectLoc);
   }
   yelpSearchResults=[];
   reducedArray = [];
@@ -239,6 +261,7 @@ if(window.location.href.indexOf('search/?') > -1){
     console.log( "success" );
   })
     .done(function(data) {
+      $('#resultsOuterBox').show();
       getLocation();
       $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
       // console.log("Server Success" );
@@ -282,7 +305,7 @@ if(window.location.href.indexOf('search/?') > -1){
           setTimeout(function() {
             $('.fullscreen-bg__video').hide();
           },540);
-          $('#searchBox').css('margin-top', '1%');
+          $('#searchBoxWrapper').css('margin-top', '1%');
           var template = $('#restTemplate').html();
           var compileTemplate = Handlebars.compile(template);
           Handlebars.registerHelper("happyHourTimes", function(x) {
@@ -291,17 +314,26 @@ if(window.location.href.indexOf('search/?') > -1){
           uniqueArray.forEach(function(each) {
             var html = compileTemplate(each);
             $('#results').append(html);
+            var eachId = each.id;
+            each.happyHourTimes.forEach(function(index){
+              $('#'+eachId+' .happyHoursIcons').append("<p class='timesIcon "+index.day+"' value='"+index.time+"'>"+index.day+"</p>")
+            });
             $('#results').addClass('fadeInUpBig animated');
             happening.forEach(function(x){
               // console.log(x);
               $(x).find('.hHDropDown').addClass('happeningNow');
               $(x).find('.nowPic').css('display', 'block');
             });
+            $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
+            var times = $('#'+eachId+' .'+day).attr('value');
+            $('#'+eachId+' .happyHTimes').text(times);
             // console.log(each);
           });
           $('#resultsOuterBox').scroll(function(){
             scrollHappening.bind(this)();
           });
+
+          daysHover();
           resultSizeChange();
           mapFunction();
           if (mapLocation !== null) {
@@ -332,10 +364,14 @@ if(window.location.href.indexOf('search/?') > -1){
   });
 }
 
-$('#homeBut').on('click', function(event) {
-window.open("index.html", '_self');
-});
 
-$('#headerTitle').on('click', function(event) {
-  window.open("index.html", '_self');
+$('#aboutBut').click(function() {
+  /* Act on the event */
+  console.log('clicked');
+  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  $('.loadingImage').hide();
+  $('.backgroundVid').hide();
+  $('#searchBoxWrapper').hide();
+  $('#outerBox').hide();
+  $('#about-page').show('slow');
 });

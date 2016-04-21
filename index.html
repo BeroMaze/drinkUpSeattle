@@ -7,7 +7,7 @@
 
     <script id="urlchecker"src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js" charset="utf-8"></script>
 
-    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script|Candal|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Kaushan+Script|Yanone Kaffeesatz|Candal' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="/vendors/animate.css" media="screen" title="no title" charset="utf-8">
 
@@ -20,25 +20,25 @@
         <div class="rightResult">
             <div class="resultsInfo">
               <h2 class="resultTitle">{{{name}}}</h2>
-              <p class="resultHood">{{{neighborhood}}}</p>
-              <a class="resultNumber" href="tel:{{{display_phone}}}">{{{display_phone}}}</a><br><br>
-              <a class="resultAddress" href="maps:daddr={{address}}">{{{address}}}</a><br>
+              <a class="resultAddress" href="maps:daddr={{address}}">{{{address}}}</a>
+              <!-- <div class="hHDays"> -->
+                Happy Hour Times:
+                <div class="happyHoursIcons">
+              </div>
+              <!-- </div> -->
+              <p class="happyHTimes">Pick a Day</p>
             </div>
             <div id="nowNowNow">
              <img class="nowPic pulse animated" src="https://cdn.evbuc.com/eventlogos/6735035/happyhour.png">
             </div>
             <div class="rideSide">
               <div class="resultsExtra">
-                <img class="yelpPower" src="/images/poweredYelp.png" />
-                <img class='ratingImg' src="{{{rating}}}" width="80px" height="20px" /></br>
-                <a class="resultSite" href="{{{website}}}" target="_blank">Checkout Menu</a>
-                <p class="resultType">{{{categories}}}</p>
-                Happy Hour Times:
-                <select class='hHDropDown'>
-                  {{#each happyHourTimes}}
-                    <option value="{{this}}">{{this}}</option>
-                  {{/each}}
-                </select>
+              <img class="yelpPower" src="/images/poweredYelp.png" />
+              <img class='ratingImg' src="{{{rating}}}" width="80px" height="20px" />
+              <p class="resultHood">{{{neighborhood}}}</p>
+              <a class="resultNumber" href="tel:{{{display_phone}}}">{{{display_phone}}}</a><br>
+              <a class="resultSite" href="{{{website}}}" target="_blank">Checkout Menu</a><br>
+              <!-- <p class="resultType">{{{categories}}}</p> -->
               </div>
                 <img class="mapIcon" src="/images/googleMap.png">
             </div>
@@ -54,24 +54,34 @@
     </div>
     <header>
       <div id="headerTitle">
-        <h1>Drink Up Seattle!</h1>
+        <a href="/"><h1>Drink Up Seattle!</h1></a>
       </div>
       <nav class="nav">
         <ul>
           <!-- <li id='homeBut'>Home</li> -->
-          <li id='aboutBut'>About</li>
+          <a href="/about"><li id='aboutBut'>About</li></a>
         </ul>
       </nav>
     </header>
     <main>
       <button id="backButton"><u id='locationName'></u> Not It?</button>
-      <input type="text" name="search" placeholder="Search Seattle" id="searchBox">
-      <article id="outerBox">
-        <div id="resultsOuterBox">
+      <div id='searchBoxWrapper'>
+        <input type="text" name="search" placeholder="Search Seattle" id="searchBox">
+        <img id="searchIcon" src="/images/search.png" alt="" />
+      </div>
+
+        <article id="outerBox">
+        <div id="resultsOuterBox" style="display:none">
           <section id='results'></section>
         </div>
         <section id='mapView'>
-          <div id="googleMap"></div>
+          <!-- <div id="mapLeft"> -->
+            <!-- <div id="moreInfo"> -->
+              <!-- <h3 id='locationName'>title</h3> -->
+
+            <!-- </div> -->
+            <div id="googleMap"></div>
+          <!-- </div> -->
           <div id="textDirect">
             <div id='turnButtons'>
               <select id="mode">
@@ -85,6 +95,50 @@
             <div id='turnByTurn'></div>
           </div>
         </section>
+      </article>
+      <article id="about-page">
+        <div class="about-outer-box">
+          <div class="about-inner-box">
+            <h1>One App for the Happiest of Hours</h1>
+            <p>
+              How cities have gone without a decent Happy Hour search app is beyond us, but we went ahead and made one just for you - the hard-working citizen on the hunt for a quality drink at a damn good price!
+            </p>
+            <p>
+              We aren't going to waste more hot air explaining what this app is good for. You already know! So jump in and start searching. While you do, we will keep making improvements. Cheers to good drinks, good food, good friends, and an app that actually works!
+            </p>
+            <h2>Codebreakers</h2>
+            <p>
+              Three of us make the Codebreakers team, a quirky trio of developers with a passion for code and making sweet simple tech products for your everyday life. True to our name, we like to break code - we like to build, break and improve our work.
+            </p>
+            <p>
+              Reach out to us if you are interested. Tell us if you like our work or if you don't. Or just say hi! Building is fun for us and helpful to you. So chime in.
+            </p>
+            <div class="codebreakers-outer-box">
+              <!-- <div class="codebreakers-names">
+              </div> -->
+              <div class="codebreakers-profiles">
+                <div class="eachBreaker">
+                  <h2>Darnell</h2>
+                  <a href="https://github.com/darnelho1/" target="_blank">
+                    <img src="https://avatars1.githubusercontent.com/u/15172569?v=3&s=400" alt="" />
+                  </a>
+                </div>
+                <div class="eachBreaker">
+                  <h2>Corey</h2>
+                  <a href="https://github.com/BeroMaze" target="_blank">
+                    <img src="https://avatars2.githubusercontent.com/u/15099481?v=3&s=400" alt="" />
+                  </a>
+                </div>
+                <div class="eachBreaker">
+                  <h2>Anthony</h2>
+                  <a href="https://github.com/ascasson" target="_blank">
+                    <img src="https://avatars0.githubusercontent.com/u/13938666?v=3&s=460" alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
