@@ -5,6 +5,9 @@ var char = 0;
 var num=0;
 var time=0;
 var endFlag=false;
+// var thisID;
+// var nowTime;
+
 $('#searchBox').attr('placeholder', '|');
 var humanize = Math.round(Math.random() * (200 - 24)) + 30;
 function typeIt(x) {
@@ -58,11 +61,6 @@ typeOut();
 function removeCursor(){
   $('#searchBox').attr('placeholder', $('#searchBox').attr('placeholder').slice(0, -1));
 }
-
-
-$("#searchBox").click(function(event) {
-  getLocation();
-});
 
 $("#searchBox").keyup(function(event) {
   searchParser.bind(this)();
@@ -118,6 +116,120 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function countDown(id) {
+  var deadline;
+  var location = id;
+  var time;
+  var timeNow = moment().format('h');
+  var amPm = moment().format('a');
+  var toDay = moment().format('dddd');
+  if (amPm === 'pm') {
+    if (timeNow !== '12') {
+      timeNow = Number(timeNow)+12;
+      // console.log(timeNow);
+    }
+  }
+  uniqueArray.forEach(function (x, day) {
+    // console.log('hello');
+    if ("#"+x.id === location) {
+      // console.log(x.id);
+      // console.log(amPm);
+      // console.log(Number(x.happyHour[toDay][0][0].split(':',1)) +"<="+Number(timeNow)+ "<="+ Number(x.happyHour[toDay][1][0].split(':',1)));
+
+      if ((Number(x.happyHour[toDay][0][0].split(':',1)) <= Number(timeNow)) && (Number(timeNow) <= Number(x.happyHour[toDay][1][0].split(':',1)))) {
+        time = x.happyHour[toDay][1][0];
+        // console.log(time);
+        if (Number(time.split(':',1)) >= 24) {
+          // console.log('next day');
+          var changeTime = moment().format('LL');
+          var splitTime = changeTime.split(' ');
+          var newDay = Number(splitTime[1].split(',',1))+1;
+          var newDate = splitTime[0]+' '+ newDay+', '+ splitTime[2];
+          var hours = Number(time.split(':',1)) - 24;
+          deadline = newDate + ' ' + hours +':00';
+          // console.log(deadline);
+        }
+        else{
+          deadline = moment().format('LL') + ' '+ time+':00';
+          // console.log(deadline);
+        }
+      }
+      else if (x.happyHour[toDay][1].length === 2){
+        if ((Number(x.happyHour[toDay][0][1].split(':',1)) <= Number(timeNow)) && (Number(timeNow) <= Number(x.happyHour[toDay][1][1].split(':',1)))) {
+          // console.log(Number(x.happyHour[toDay][0][1].split(':',1)));
+          // console.log(Number(timeNow));
+          // console.log(Number(x.happyHour[toDay][1][1].split(':',1)));
+          time = x.happyHour[toDay][1][1];
+          if (Number(time.split(':',1)) >= 24) {
+            // console.log('next day');
+            var changeTime = moment().format('LL');
+            var splitTime = changeTime.split(' ');
+            var newDay = Number(splitTime[1].split(',',1))+1;
+            var newDate = splitTime[0]+' '+ newDay+', '+ splitTime[2];
+            console.log(Number(time.split(':',1)));
+            var hours = Number(time.split(':',1)) - 24;
+            deadline = newDate + ' ' + hours +':59';
+            // console.log(deadline);
+          }
+          else{
+            deadline = moment().format('LL') + ' '+ time+':00';
+            // console.log(deadline);
+          }
+        }
+      }
+    }
+  });
+  function getTimeRemaining (deadline){
+    // console.log(Date.parse(deadline));
+    // console.log(deadline);
+    var t = Date.parse(deadline) - Date.parse(new Date());
+    // console.log(deadline);
+    // console.log(t);
+    var seconds = Math.floor((t/1000)%60);
+    var minutes = Math.floor((t/1000/60)%60);
+    var hours = Math.floor((t/(1000*60*60))%24);
+    var days = Math.floor(t/(1000*60*60*24));
+    return {
+      'total': t,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
+  }
+
+  function updateClock(){
+      var t = getTimeRemaining(deadline);
+      console.log(t.total);
+      if (isNaN(t.total)) {
+        console.log(t +' cleared');
+        clearInterval(timeinterval);
+        timeinterval = 0;
+      }
+      // console.log(location);
+      $(location).find('.hours').text(t.hours);
+      $(location).find('.minutes').text(('0' + t.minutes).slice(-2));
+      $(location).find('.seconds').text(('0' + t.seconds).slice(-2));
+      if(t.total<=0){
+        clearInterval(timeinterval);
+      }
+      $('#searchBox').keypress(function(event) {
+        if(event.which===13){
+          console.log('clear');
+          clearInterval(timeinterval);
+          timeinterval = 0;
+        }
+      });
+
+      $('#searchIcon').click(function(){
+        console.log('clear');
+        clearInterval(timeinterval);
+        timeinterval = 0;
+      });
+  }
+  updateClock(location); // run function once at first to avoid delay
+  var timeinterval = setInterval(updateClock,1000);
+}
+
 function scrollHappening() { /// insure to bind this to the element being calling it
   if(($(this).scrollTop() + $(this).innerHeight()>=$(this)[0].scrollHeight-1) && (endFlag === false)){
     // console.log('happening');
@@ -141,6 +253,7 @@ function scrollHappening() { /// insure to bind this to the element being callin
       console.log( "success" );
     })
       .done(function(data) {
+        $('#resultsOuterBox').show();
         console.log("Server Success" );
         // console.log(data);
         if (data.hasOwnProperty('statusCode')){
@@ -190,21 +303,47 @@ function scrollHappening() { /// insure to bind this to the element being callin
           newResults.forEach(function(each) {
             var html = compileTemplate(each);
             $('#results').append(html);
+            var eachId = each.id;
+            each.happyHourTimes.forEach(function(index){
+              $('#'+eachId+' .happyHoursIcons').append("<p class='timesIcon "+index.day+"' value='"+index.time+"'>"+index.day+"</p>");
+            });
             $('#results').addClass('fadeInUpBig animated');
+            var times = $('#'+eachId+' .'+day).attr('value');
+            $('#'+eachId+' .happyHTimes').text(times);
           });
           happening.forEach(function(x){
+            var id = x;
             $(x).find('.hHDropDown').addClass('happeningNow');
-            $(x).find('.nowPic').css('display', 'block');
+            $(x).find('.clock').css('display', 'block');
+            countDown(id);
           });
-          mapFunction();
+          $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
           endFlag = false;
         }
+        $('.mapIcon').unbind('click');
+        $('.resultTitle').unbind('click');
+        mapFunction();
+        $('.timesIcon').unbind('mouseenter mouseleave');
+        daysHover();
       });
   }
 }
 
 if((window.location.href.indexOf('search/index.html') > -1)||(window.location.href.indexOf('search/?undefined') > -1)){
-  window.history.pushState("/","/","/");
+  window.open("/", '_self');
+}
+
+
+if((window.location.href.indexOf('about') > -1)||(window.location.href.indexOf('about/') > -1)){
+  $('#iframeAPIplayer').css('display', 'none');
+  $('#iframeAPIplayer').remove();
+  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  $('.loadingImage').hide();
+  $('.backgroundVid').hide();
+  $('#searchBoxWrapper').hide();
+  $('#outerBox').hide();
+  $('#about-page').css('display', 'flex');
+  $('#about-page').show('slow');
 }
 
 if(window.location.href.indexOf('search/?') > -1){
@@ -212,25 +351,26 @@ if(window.location.href.indexOf('search/?') > -1){
   $('#iframeAPIplayer').remove();
   User.terms = getParameterByName('terms');
   var mapLocation = getParameterByName('locationID');
-  console.log(mapLocation);
-  console.log(User.terms);
+  // console.log(mapLocation);
+  // console.log(User.terms);
   if (User.reqNeighborhood===undefined) {
     User.reqNeighborhood = undefined;
   }
   else {
   User.reqNeighborhood = getParameterByName('reqNeighborhood');
   }
-  if (User.currectLoc===""){
-    User.currectLoc=undefined;
-    }
-  else{
+  // if (User.currectLoc===""){
+  //   console.log('blank string');
+  //   User.currectLoc=undefined;
+  //   }
+  // else{
     User.currectLoc = getParameterByName('currectLoc');
-  }
-  console.log(User.currectLoc);
+    // console.log(User.currectLoc);
+  // }
+  // console.log(User.currectLoc);
   if (User.currectLoc !== undefined) {
     userLat=User.currectLoc.split(',')[0];
     userLong=User.currectLoc.split(',')[1];
-    console.log(User.currectLoc);
   }
   yelpSearchResults=[];
   reducedArray = [];
@@ -239,6 +379,7 @@ if(window.location.href.indexOf('search/?') > -1){
     console.log( "success" );
   })
     .done(function(data) {
+      $('#resultsOuterBox').show();
       getLocation();
       $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
       // console.log("Server Success" );
@@ -254,14 +395,14 @@ if(window.location.href.indexOf('search/?') > -1){
         data.yelp.forEach(function(x){
             happyHourArray.forEach(function(y) {
               if (x.id === y.id) {
-                console.log(y);
-                console.log(y.logo);
-                console.log(y.website);
+                // console.log(y);
+                // console.log(y.logo);
+                // console.log(y.website);
                 x.happyHour=y.happyHour;
                 x.img = y.logo;
                 x.website = y.website;
                 var place = new Places(x);
-                console.log(place);
+                // console.log(place);
                 resultsArray.push(place);
               }
             });
@@ -282,7 +423,7 @@ if(window.location.href.indexOf('search/?') > -1){
           setTimeout(function() {
             $('.fullscreen-bg__video').hide();
           },540);
-          $('#searchBox').css('margin-top', '1%');
+          $('#searchBoxWrapper').css('margin-top', '1%');
           var template = $('#restTemplate').html();
           var compileTemplate = Handlebars.compile(template);
           Handlebars.registerHelper("happyHourTimes", function(x) {
@@ -291,18 +432,29 @@ if(window.location.href.indexOf('search/?') > -1){
           uniqueArray.forEach(function(each) {
             var html = compileTemplate(each);
             $('#results').append(html);
+            var eachId = each.id;
+            each.happyHourTimes.forEach(function(index){
+              $('#'+eachId+' .happyHoursIcons').append("<p class='timesIcon "+index.day+"' value='"+index.time+"'>"+index.day+"</p>");
+            });
             $('#results').addClass('fadeInUpBig animated');
             happening.forEach(function(x){
-              // console.log(x);
+              var id = x;
               $(x).find('.hHDropDown').addClass('happeningNow');
-              $(x).find('.nowPic').css('display', 'block');
+              $(x).find('.clock').css('display', 'block');
+              countDown(id);
             });
+            $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
+            var times = $('#'+eachId+' .'+day).attr('value');
+            $('#'+eachId+' .happyHTimes').text(times);
             // console.log(each);
           });
           $('#resultsOuterBox').scroll(function(){
             scrollHappening.bind(this)();
           });
+
+          daysHover();
           resultSizeChange();
+
           mapFunction();
           if (mapLocation !== null) {
             if (userLat === undefined) {
@@ -320,7 +472,7 @@ if(window.location.href.indexOf('search/?') > -1){
             var resultsInfoArray = resultsInfoLocation.split('&');
             resultsInfo = resultsInfoArray[0]+'&'+resultsInfoArray[1]+'&'+resultsInfoArray[2];
             console.log(resultsInfo);
-            GotToMap();
+            // GotToMap();
           }
       }
   })
@@ -332,10 +484,14 @@ if(window.location.href.indexOf('search/?') > -1){
   });
 }
 
-$('#homeBut').on('click', function(event) {
-window.open("index.html", '_self');
-});
 
-$('#headerTitle').on('click', function(event) {
-  window.open("index.html", '_self');
+$('#aboutBut').click(function() {
+  /* Act on the event */
+  console.log('clicked');
+  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  $('.loadingImage').hide();
+  $('.backgroundVid').hide();
+  $('#searchBoxWrapper').hide();
+  $('#outerBox').hide();
+  $('#about-page').show('slow');
 });

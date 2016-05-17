@@ -21,9 +21,28 @@ var userloc;
 var userLat;
 var userLong;
 var entered = false;
+var day;
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getUserLoc);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+function getUserLoc(position) {
+    userloc = position.coords.latitude + ','+ position.coords.longitude;
+    userLat=position.coords.latitude;
+    userLong=position.coords.longitude;
+    User.currectLoc=userloc;
+    console.log(User);
+}
 
 $('#mapView').hide();
 $('#backButton').hide();
+$('#about-page').hide();
+getLocation();
 
 function resultSizeChange() {
   $height = $(window).height();
@@ -31,22 +50,27 @@ function resultSizeChange() {
   if($(window).width() < 500){
     console.log('working');
     $('#outerBox').css('height', ($height * 0.77));
+    $('#about-page').css('height', ($height * 0.92));
     $('#resultsOuterBox').css('height', ($height * 0.77));
   }
   else if($(window).width() < 697){
     console.log('working');
     $('#outerBox').css('height', ($height * 0.725));
+    $('#about-page').css('height', ($height * 0.875));
     $('#resultsOuterBox').css('height', ($height * 0.725));
   }
   else if ($(window).width() < 935) {
     $('#outerBox').css('height', ($height * 0.715));
+    $('#about-page').css('height', ($height * 0.855));
     $('#resultsOuterBox').css('height', ($height * 0.715));
   }
   else{
     $('#outerBox').css('height', ($height * 0.71));
+    $('#about-page').css('height', ($height * 0.85));
     $('#resultsOuterBox').css('height', ($height * 0.71));
   }
 }
+resultSizeChange();
 $(window).resize(function() {
     resultSizeChange();
   });
@@ -64,11 +88,6 @@ function sortLocations(locations, lat, lng) {
   });
 }
 
-$(window).ready(function(event) {
-  getLocation();
-  // console.log('clicked');
-});
-
 var yelpSearchResults=[];
 var reducedArray = [];
 var resultsArray=[];
@@ -83,8 +102,7 @@ var searchParser= function(){
   // console.log('Parse Location test');
   // console.log(userloc);
 
-
-  console.log(userLat,userLong);
+  // console.log(userLat,userLong);
 
   userSearchData=$(this).val();
   yelpNeighborhoods.forEach(function(x){
@@ -92,10 +110,13 @@ var searchParser= function(){
       User.reqNeighborhood=x;
     }
   });
-
+  console.log(userSearchData);
   User.terms=userSearchData.toUpperCase().replace(User.reqNeighborhood,"");
-  User.currectLoc=userloc;
-
+  if (userSearchData === '') {
+    console.log('clear');
+    User.reqNeighborhood = undefined;
+    User.terms = '';
+  }
   console.log(User);
 };
 
@@ -103,9 +124,15 @@ hhNow=function(x){
   // console.log("hnow running");
   x.forEach(function(obj){
   for(var key in obj.happyHour){
+    if (key.toString().indexOf(moment()._d.toString().slice(0,3)) > -1){
+      // console.log(key);
+      day = key.slice(0,3);
+      // console.log(day);
+    }
     if (moment().isSame(moment().day(key))){//if object day is the same as today
       // console.log(obj.happyHour[key]);
       for(i=0;i<obj.happyHour[key][0].length;i++){
+        // console.log(obj);
         // console.log(obj.happyHour[key][0][i].split(":"));
         var startHour=Number(obj.happyHour[key][0][i].split(":")[0]);
         var startMin=Number(obj.happyHour[key][0][i].split(":")[1]);
@@ -121,16 +148,21 @@ hhNow=function(x){
           // console.log(obj);
           // console.log("Happy hour is between: "+moment().day(key).hour(startHour).minute(startMin).format('llll')+"-"+moment().day(key).hour(endHour).minute(endMin).format('llll'));
         }
+
+
       }
     }
     }
 });
+console.log('color');
 };
 
 var hhTimes=function(x){
+  console.log(x);
   x.forEach(function(obj){
     obj.happyHourTimes=[];
-    // console.log(obj);
+    obj.happyHourTime=[];
+    obj.happyHourTimeFilter=[];
     for(var key in obj.happyHour){
       for(i=0;i<obj.happyHour[key][0].length;i++){
         var startHour=Number(obj.happyHour[key][0][i].split(":")[0]);
@@ -138,27 +170,44 @@ var hhTimes=function(x){
         var endHour=Number(obj.happyHour[key][1][i].split(":")[0]);
         var endMin=Number(obj.happyHour[key][1][i].split(":")[1]);
         // console.log("Happy Hours: "+moment().day(key).hour(startHour).minute(startMin).format('llll')+"-"+moment().day(key).hour(endHour).minute(endMin).format('llll'));
-        obj.happyHourTimes.push(moment().day(key).hour(startHour).minute(startMin).format('ddd h:mma')+"-"+moment().day(key).hour(endHour).minute(endMin).format('h:mma'));
+        obj.happyHourTime.push({'day': moment().day(key).format('ddd'), 'time':moment().hour(startHour).minute(startMin).format('h:mma')+"-"+moment().day(key).hour(endHour).minute(endMin).format('h:mma')});
       }
       // console.log(arry);
     }
-    // obj.happyHourTimes;
+    console.log(obj);
+    for (index = 0; index < obj.happyHourTime.length; index++) {
+      var nextOne = 1;
+      while (nextOne < obj.happyHourTime.length) {
+        if (obj.happyHourTime[index].day === obj.happyHourTime[nextOne].day) {
+            if (obj.happyHourTime[index].time === obj.happyHourTime[nextOne].time) {
+            obj.happyHourTimes.push({'day':obj.happyHourTime[index].day, 'time': obj.happyHourTime[index].time});
+            nextOne = obj.happyHourTime.length;
+          }
+          else{
+            obj.happyHourTimes.push({'day': obj.happyHourTime[index].day, 'time': obj.happyHourTime[nextOne].time +" & "+ obj.happyHourTime[index].time});
+            nextOne = obj.happyHourTime.length;
+          }
+        }
+        else if(nextOne === obj.happyHourTime.length-1) {
+          obj.happyHourTimes.push({'day':obj.happyHourTime[index].day, 'time': obj.happyHourTime[index].time});
+        }
+        nextOne++;
+      }
+    }
+    for (index = 0; index < obj.happyHourTimes.length-1; index++) {
+      var next = index+1;
+      // console.log(next);
+      if (obj.happyHourTimes[index].day == obj.happyHourTimes[next].day) {
+        if (index === 0) {
+          obj.happyHourTimes.splice(next, 1);
+        }
+        else{
+          obj.happyHourTimes.splice(index, 1);
+        }
+      }
+    }
   });
 };
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(getUserLoc);
-    } else {
-        console.log("Geolocation is not supported by this browser.");
-    }
-}
-
-function getUserLoc(position) {
-    userloc = position.coords.latitude + ','+ position.coords.longitude;
-        userLat=position.coords.latitude;
-        userLong=position.coords.longitude;
-}
 
 function sortLocations(locations, lat, lng) {
   function dist(l) {
@@ -171,89 +220,141 @@ function sortLocations(locations, lat, lng) {
   });
 }
 
+function daysHover() {
+  var thisID;
+  var nowTime;
+  $('.timesIcon').hover(function() {
+    var times = $(this).attr('value');
+    var thisId = $(this).parent().parent().parent().parent().attr('id');
+    thisID = '#'+thisId;
+    // console.log(thisID);
+    nowTime = $(thisID+" .happyHTimes").text();
+    // console.log(nowTime);
+    $(this).css('background-color', 'rgba(255, 0, 0, 0.81)');
+    $(thisID+" .happyHTimes").text(times);
+    if ($(this).text()!==day) {
+      $(thisID+" ."+day).css('background-color', 'rgba(0, 0, 0, 0.81)');
+    }
+  }, function() {
+    $(this).css('background-color', 'rgba(0, 0, 0, 0.81)');
+    $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
+    // console.log(nowTime);
+    $(thisID+" .happyHTimes").text(nowTime);
+    // console.log(nowTime);
+  });
+}
+
+defaultSearch = function(){
+  document.activeElement.blur();
+  $("#searchBox").blur();
+if(entered === false){
+  entered = true;
+  console.log($('#searchBox').val());
+  if ($('#searchBox').val() === '') {
+    User.reqNeighborhood = undefined;
+    User.terms = "";
+  }
+  $('#results').empty();
+  $('#resultsOuterBox').unbind('scroll');
+  yelpSearchResults=[];
+  reducedArray = [];
+  resultsArray=[];
+  // searchCrit=$('#searchBox').val();
+  $.post( "/search",{searchCrit:User}, function(data) {
+    // console.log( "success" );
+  })
+    .done(function(data) {
+      $('#resultsOuterBox').show();
+      // $('#searchIcon').hide();
+      if(window.location.href.indexOf('search') <= -1){
+        window.history.pushState("search/" + data.url," ","search/?" + data.url);
+      }
+      else{
+        window.history.pushState("search/" + data.url," ","?" + data.url);
+      }
+      $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+
+      if (data.yelp.hasOwnProperty('statusCode')){
+        console.warn("Error was logged when trying to retrieve results from the Yelp API: "+ data.yelp.data);
+        alert("There was a problem processing your request. Please try again or check the console for more information");
+      }
+      else {
+        data.yelp.forEach(function(x){
+            happyHourArray.forEach(function(y) {
+              if (x.id === y.id) {
+                x.happyHour=y.happyHour;
+                x.img  = y.logo;
+                x.website = y.website;
+                var place = new Places(x);
+                resultsArray.push(place);
+              }
+            });
+          });
+          hhNow(resultsArray);
+          if (resultsArray.length === 0) {
+            $('#results').html('<img id="sadPanda" src="http://cdn.meme.am/instances/57095046.jpg"><h4 id="tryAgain">Search Again...</h4>');
+          }
+          hhTimes(resultsArray);
+          uniqueArray=_.uniq(resultsArray,function(x){
+            return x.name;
+          });
+          $('.backgroundVid').css('background-color', 'rgba(250, 250, 250, 0)');
+          $('.fullscreen-bg__video').addClass('fadeOutUp animated');
+          setTimeout(function() {
+            console.log('time Done');
+            $('.fullscreen-bg__video').hide();
+            $('#iframeAPIplayer').css('display', 'none');
+            $('#iframeAPIplayer').remove();
+          },540);
+          $('#searchBoxWrapper').css('margin-top', '1%');
+          var template = $('#restTemplate').html();
+          var compileTemplate = Handlebars.compile(template);
+          Handlebars.registerHelper("happyHourTimes", function(x) {
+              return x;
+          });
+          uniqueArray.forEach(function(each) {
+            var html = compileTemplate(each);
+            $('#results').append(html);
+            var eachId = each.id;
+            each.happyHourTimes.forEach(function(index){
+              $('#'+eachId+' .happyHoursIcons').append("<p class='timesIcon "+index.day+"' value='"+index.time+"'>"+index.day+"</p>");
+            });
+            $('#results').addClass('fadeInUpBig animated');
+            happening.forEach(function(x){
+              var id = x;
+              $(x).find('.hHDropDown').addClass('happeningNow');
+              $(x).find('.clock').css('display', 'block');
+              countDown(x);
+            });
+            $('.'+day).css('background-color', 'rgba(255, 0, 0, 0.81)');
+            var times = $('#'+eachId+' .'+day).attr('value');
+            $('#'+eachId+' .happyHTimes').text(times);
+          });
+          $('#resultsOuterBox').scroll(function(){
+            scrollHappening.bind(this)();
+          });
+          daysHover();
+
+          resultSizeChange();
+          mapFunction();
+          var endFlag = false;
+      }
+      entered = false;
+  })
+    .fail(function() {
+      alert("Error Communicating With Server");
+    })
+    .always(function() {
+  });
+}
+};
+
 $('#searchBox').keypress(function(event) {
   if(event.which===13){
-    document.activeElement.blur();
-    $("#searchBox").blur();
-  if(entered === false){
-    entered = true;
-    $('#results').empty();
-    yelpSearchResults=[];
-    reducedArray = [];
-    resultsArray=[];
-    // searchCrit=$('#searchBox').val();
-    $.post( "/search",{searchCrit:User}, function(data) {
-      // console.log( "success" );
-    })
-      .done(function(data) {
-        if(window.location.href.indexOf('search') <= -1){
-          window.history.pushState("search/" + data.url," ","search/?" + data.url);
-        }
-        else{
-          window.history.pushState("search/" + data.url," ", data.url);
-        }
-
-        $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
-
-        if (data.yelp.hasOwnProperty('statusCode')){
-          console.warn("Error was logged when trying to retrieve results from the Yelp API: "+ data.yelp.data);
-          alert("There was a problem processing your request. Please try again or check the console for more information");
-        }
-        else {
-          data.yelp.forEach(function(x){
-              happyHourArray.forEach(function(y) {
-                if (x.id === y.id) {
-                  x.happyHour=y.happyHour;
-                  x.img  = y.logo;
-                  x.website = y.website;
-                  var place = new Places(x);
-                  resultsArray.push(place);
-                }
-              });
-            });
-            hhNow(resultsArray);
-            if (resultsArray.length === 0) {
-              $('#results').html('<img id="sadPanda" src="http://cdn.meme.am/instances/57095046.jpg"><h4 id="tryAgain">Search Again...</h4>');
-            }
-            hhTimes(resultsArray);
-            uniqueArray=_.uniq(resultsArray,function(x){
-              return x.name;
-            });
-            $('.backgroundVid').css('background-color', 'rgba(250, 250, 250, 0)');
-            $('.fullscreen-bg__video').addClass('fadeOutUp animated');
-            setTimeout(function() {
-              console.log('time Done');
-              $('.fullscreen-bg__video').hide();
-            },540);
-            $('#searchBox').css('margin-top', '1%');
-            var template = $('#restTemplate').html();
-            var compileTemplate = Handlebars.compile(template);
-            Handlebars.registerHelper("happyHourTimes", function(x) {
-                return x;
-            });
-            uniqueArray.forEach(function(each) {
-              var html = compileTemplate(each);
-              $('#results').append(html);
-              $('#results').addClass('fadeInUpBig animated');
-              happening.forEach(function(x){
-                $(x).find('.hHDropDown').addClass('happeningNow');
-                $(x).find('.nowPic').css('display', 'block');
-              });
-            });
-            $('#resultsOuterBox').scroll(function(){
-              scrollHappening.bind(this)();
-            });
-            resultSizeChange();
-            mapFunction();
-            var endFlag = false;
-        }
-        entered = false;
-    })
-      .fail(function() {
-        alert("Error Communicating With Server");
-      })
-      .always(function() {
-    });
+    defaultSearch();
   }
-}
+});
+
+$('#searchIcon').click(function(){
+  defaultSearch();
 });

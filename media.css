@@ -35,6 +35,13 @@
     font-size: 1.2em;
     margin-top: 0;
   }
+  #searchIcon{
+    margin: 0 0 auto auto;
+  }
+  /*.timesIcon{
+    font-size: .6em;
+    margin-left: 3px;
+  }*/
 }
 
 @media (max-width: 767px) {
@@ -49,7 +56,7 @@
     margin-left: 5%;
   }
   #searchBox{
-    /*font-size: 1.3em;*/
+    font-size: 1.3em;
     /*height: 60px;*/
   }
   #backButton{
@@ -80,11 +87,12 @@
     height: 310px;
   }
   .resultTitle{
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
   .resultsInfo{
     padding-left: 1%;
     width: 100%;
+    height: auto;
   }
   .resultsExtra{
     width: 100%;
@@ -108,18 +116,23 @@
     margin: 2% 0;
     width: 100%;
   }
-  .resultAddress{
-    width: 70%;
-  }
+
   .nowPic{
-    width: 80%;
-    height: 80%;
+    width: 70%;
+    height: 70%;
     margin-left: 5px;
-    margin-bottom: -40px;
+    /*margin-bottom: -40px;*/
+  }
+  #nowNowNow{
+    width: 20%;
   }
 
   .rideSide{
     width: 100%;
+  }
+  .happyHoursIcons{
+    height: 30px;
+    margin-top: 5px;
   }
 
   ul{
@@ -131,8 +144,8 @@
     -webkit-justify-content: center;
     -moz-justify-content: center;
   }
-  .nav>ul>li{
-    margin-right: 20%;
+  nav ul li{
+    margin-right: 15%;
   }
   #iframeAPIplayer {
     display: none;
@@ -188,26 +201,127 @@
     height: 10%;
   }
   .resultsInfo{
-    width: 70%;
+    width: 78%;
+  }
+  .resultNumber{
+    margin-top: 50px;
+    font-size: 1em;
+    height: 100%;
+  }
+  .resultAddress{
+    /*height: 100%;*/
+    width: 100%;
+    font-size: 1em;
+    margin-top: 5px;
+  }
+  .resultSite{
+    font-size: 1.3em;
+  }
+  .happyHoursIcons{
+    height: 25px;
+  }
+  #searchIcon{
+    margin: 0 0 auto 2%;
   }
 }
 @media (max-width: 500px) {
+  #searchBoxWrapper{
+    height: 50px;
+    margin-bottom: 15px;
+  }
   #searchBox{
     height: 50px;
     font-size: 1.3em;
+    border-radius: 15px;
+  }
+  #searchIcon{
+    margin: 3px 0 auto 3%;
+    height: 55px;
+    width: 55px;
+  }
+  nav{
+    margin-right: 10%;
+  }
+  .resultTitle{
+    font-size: 1.3em;
+    /*height: 100%;*/
   }
   .resultsInfo{
-    width: 70%;
+    width: 77%;
+    height: 180px;
+    margin-bottom: 0;
+  }
+  .resultsExtra{
+    text-align: left;
+    margin-top: 0;
+    height: 100px;
+  }
+  .happyHTimes{
+    font-size: 1em;
+  }
+  .resultNumber{
+    margin-top: 45px;
+    font-size: 1em;
+    height: 100%;
+  }
+  .resultAddress{
+    /*height: 100%;*/
+    width: 100%;
+    font-size: 1em;
+    /*margin-top: 12px;*/
+  }
+  .resultHood{
+    margin-top: 1px;
+    margin-bottom: 1px;
   }
   .resultBox{
     background-size: 0;
     background-color: rgba(0, 0, 0, 0.33);
   }
+  .resultSite{
+    font-size: 1.3em;
+  }
+  .nowNowNow{
+    margin-right: 0;
+  }
   .nowPic{
-    width: 100%;
-    height: 100%;
-    margin-left: 0;
+    width: 95%;
+    height: 95%;
+    margin-right: 0;
     margin-bottom: 0;
   }
+  .mapIcon{
+    width: 35%;
+    height: 35%;
+    margin-right: 0;
+  }
+  .about-inner-box {
+    width: 300px;
+  }
+  .codebreakers-profiles {
+    width: 360px;
+    margin-bottom: 50px;
+  }
+    .codebreakers-profiles img {
+      width: 100px;
+    }
+    .codebreakers-names {
+      width: 335px;
+    }
+}
 
+@media (max-width: 350px) {
+  .about-inner-box {
+    width: 275px;
+  }
+  .codebreakers-profiles {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+    .codebreakers-profiles img {
+      width: 100px;
+    }
+    .codebreakers-names {
+      width: 300px;
+    }
 }
