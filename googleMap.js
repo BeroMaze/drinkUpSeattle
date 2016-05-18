@@ -107,7 +107,6 @@ function mapFunction() {
     window.history.replaceState(location.href+"&locationID="+clickedLocation,location.href+"&locationID="+clickedLocation,location.href+"&locationID="+clickedLocation);
     GotToMap();
   }
-
   $('.mapIcon').on('click', function(event) {
     locationId = $(this).parent().parent().parent().find('.resultAddress').text();
     var clickedLocation = $(this).parent().parent().parent().attr("id");

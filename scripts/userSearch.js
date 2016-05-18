@@ -196,7 +196,6 @@ var hhTimes=function(x){
     }
     for (index = 0; index < obj.happyHourTimes.length-1; index++) {
       var next = index+1;
-      // console.log(next);
       if (obj.happyHourTimes[index].day == obj.happyHourTimes[next].day) {
         if (index === 0) {
           obj.happyHourTimes.splice(next, 1);
