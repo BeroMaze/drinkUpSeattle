@@ -65,6 +65,13 @@ header{
   color: rgba(255, 255, 255, 0.80);
   background-color: rgba(0, 0, 0, 0.8);
 }
+#headerTitle h1 {
+  margin-bottom: 1px;
+}
+#currInfo{
+  margin-top: 0;
+  font-size: .7em;
+}
 main{
   display: flex;
   display: -webkit-flex;
@@ -520,7 +527,7 @@ table.adp-placemark{
   animation-iteration-count: infinite;
   -moz-animation-iteration-count: infinite;
   -webkit-animation-iteration-count: infinite;
-  
+
 }
 .nowPic{
   display: none;
