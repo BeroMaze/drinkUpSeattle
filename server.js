@@ -49,13 +49,22 @@ app.post('/resultsMore',function(req,res){
   userSearchReq = req.body.searchCrit;
   console.log(userSearchReq);
   if(userSearchReq.reqNeighborhood===undefined){
+    // var sw_latitude = userSearchReq.currectLoc.lat- 0.024;
+    // var ne_latitude = Number(userSearchReq.currectLoc.lat) + 0.024;
+    // var sw_longitude = userSearchReq.currectLoc.long - 0.024;
+    // var ne_longitude = Number(userSearchReq.currectLoc.long) + 0.024;
+    console.log(userSearchReq.moreSearch.sw_latitude +', '+userSearchReq.moreSearch.ne_latitude+', '+userSearchReq.moreSearch.sw_longitude+', '+userSearchReq.moreSearch.ne_longitude);
     yelp.search(
       {
         term:'happy hour '+ userSearchReq.terms,
-        ll:userSearchReq.currectLoc,
+        // ll:userSearchReq.currectLoc,
+        bounds: userSearchReq.moreSearch.sw_latitude+','+userSearchReq.moreSearch.sw_longitude+'|'+userSearchReq.moreSearch.ne_latitude+','+userSearchReq.moreSearch.ne_longitude,
         limit:20
       }).then(function(data){
-      console.log(data.businesses);
+        // data.businesses.forEach(function(each) {
+        //   console.log(each.id);
+        // });
+      // console.log(data.businesses);
       searchResults=data.businesses;
       res.send(searchResults);
     }).catch(function(error){
@@ -64,12 +73,12 @@ app.post('/resultsMore',function(req,res){
     });
   }
   else{
-  yelp.search(
-    {
-      term:'happy hour '+ userSearchReq.terms,
-      location:userSearchReq.reqNeighborhood,
-      cll:userSearchReq.currectLoc,
-      limit:20
+    yelp.search(
+      {
+        term:'happy hour '+ userSearchReq.terms,
+        location:userSearchReq.reqNeighborhood +' SEATTLE',
+        cll:userSearchReq.currectLoc||"47.6097,-122.3331",
+        limit:20
     }).then(function(data){
     console.log(data.businesses);
     searchResults=data.businesses;
@@ -84,16 +93,23 @@ app.post('/resultsMore',function(req,res){
 app.post('/search',function(req,res){
   // console.log(req.body.searchCrit);
   userSearchReq = req.body.searchCrit;
+  console.log('<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>');
   console.log(userSearchReq);
-  var searchString = querystring.stringify({terms:userSearchReq.terms, reqNeighborhood:userSearchReq.reqNeighborhood, currectLoc:userSearchReq.currectLoc});
+  var searchString = querystring.stringify({terms:userSearchReq.terms, reqNeighborhood:userSearchReq.reqNeighborhood, currectLoc:userSearchReq.currectLoc.lat+','+userSearchReq.currectLoc.long});
   // console.log('the string:');
-  // console.log(searchString);
+  console.log(searchString);
   if(userSearchReq.reqNeighborhood===undefined){
     console.log(userSearchReq.currectLoc);
+    var sw_latitude = userSearchReq.currectLoc.lat- 0.012;
+    var ne_latitude = Number(userSearchReq.currectLoc.lat) + 0.012;
+    var sw_longitude = userSearchReq.currectLoc.long - 0.012;
+    var ne_longitude = Number(userSearchReq.currectLoc.long) + 0.012;
+    console.log(sw_latitude+", "+ne_latitude +", "+sw_longitude +", "+ne_longitude);
     yelp.search(
       {
         term:'happy hour '+ userSearchReq.terms,
-        ll:userSearchReq.currectLoc||"47.6097,-122.3331",
+        // ll:userSearchReq.currectLoc||"47.6097,-122.3331",
+        bounds: sw_latitude+','+sw_longitude+'|'+ne_latitude+','+ne_longitude,
         limit:20
       }).then(function(data){
       console.log(data);
@@ -106,12 +122,14 @@ app.post('/search',function(req,res){
   }
 
   else{
-  yelp.search(
-    {
-      term:'happy hour '+ userSearchReq.terms,
-      location:userSearchReq.reqNeighborhood,
-      cll:userSearchReq.currectLoc||"47.6097,-122.3331",
-      limit:20
+    console.log('121');
+    console.log(userSearchReq);
+    yelp.search(
+      {
+        term:'happy hour '+ userSearchReq.terms,
+        location:userSearchReq.reqNeighborhood +' SEATTLE',
+        cll:userSearchReq.currectLoc.lat +', '+ userSearchReq.currectLoc.long ||"47.6097,-122.3331",
+        limit:20
     }).then(function(data){
     // console.log(data.businesses);
     searchResults = { yelp :data.businesses, url: searchString};

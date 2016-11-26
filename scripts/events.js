@@ -199,7 +199,7 @@ function countDown(id) {
 
   function updateClock(){
       var t = getTimeRemaining(deadline);
-      console.log(t.total);
+      // console.log(t.total);
       if (isNaN(t.total)) {
         console.log(t +' cleared');
         clearInterval(timeinterval);
@@ -235,18 +235,44 @@ function scrollHappening() { /// insure to bind this to the element being callin
     // console.log('happening');
     endFlag = true;
     // console.log($('#results').children(':last-child').attr('id'));
-    var lastResult = $('#results').children(':last-child').attr('id');
-    // console.log(lastResult);
-    uniqueArray.forEach(function(v) {
-      if (v.id === lastResult) {
-        // console.log(lastResult);
-        lastResult = v.coordinate;
+    if (User.reqNeighborhood) {
+      var lastResult = $('#results').children(':last-child').attr('id');
+      console.log(lastResult);
+      uniqueArray.forEach(function(v) {
+        if (v.id === lastResult) {
+          // console.log(lastResult);
+          lastResult = v.coordinate;
+        }
+      });
+      console.log(lastResult);
+      if (User.moreSearch) {
+        User.moreSearch.sw_latitude = lastResult.latitude -0.014;
+        User.moreSearch.ne_latitude = lastResult.latitude +0.014;
+        User.moreSearch.sw_longitude = lastResult.longitude -0.014;
+        User.moreSearch.ne_longitude = lastResult.longitude +0.014;
+        console.log(User.reqNeighborhood);
       }
-    });
-    // console.log(lastResult);
-    var resLat = lastResult.latitude + 0.0239;
-    var resLong = lastResult.longitude + 0.0239;
-    User.currectLoc = resLat + ", "+ resLong;
+      else{
+        User.moreSearch = {sw_latitude: lastResult.latitude - 0.014,
+        ne_latitude :lastResult.latitude + 0.014,
+        sw_longitude : lastResult.longitude - 0.014,
+        ne_longitude : lastResult.longitude + 0.014};
+      }
+    }
+    else{
+      if (User.moreSearch) {
+        User.moreSearch.sw_latitude = User.moreSearch.sw_latitude -0.014;
+        User.moreSearch.ne_latitude = User.moreSearch.ne_latitude +0.014;
+        User.moreSearch.sw_longitude = User.moreSearch.sw_longitude -0.014;
+        User.moreSearch.ne_longitude = User.moreSearch.ne_longitude +0.014;
+      }
+      else{
+        User.moreSearch = {sw_latitude: User.currectLoc.split(',')[0]- 0.014,
+        ne_latitude :Number(User.currectLoc.split(',')[0]) + 0.014,
+        sw_longitude : User.currectLoc.split(',')[1] - 0.014,
+        ne_longitude : Number(User.currectLoc.split(',')[1]) + 0.014};
+      }
+    }
     User.reqNeighborhood = undefined;
     // console.log(lastResult);
     $.post( "/resultsMore",{searchCrit:User}, function(data) {
@@ -351,8 +377,12 @@ if(window.location.href.indexOf('search/?') > -1){
   $('#iframeAPIplayer').remove();
   User.terms = getParameterByName('terms');
   var mapLocation = getParameterByName('locationID');
-  // console.log(mapLocation);
-  // console.log(User.terms);
+  console.log(mapLocation);
+  console.log(User.terms);
+  if (getParameterByName('reqNeighborhood')) {
+    console.log('reqNeb');
+    User.reqNeighborhood = getParameterByName('reqNeighborhood');
+  }
   if (User.reqNeighborhood===undefined) {
     User.reqNeighborhood = undefined;
   }
@@ -365,16 +395,19 @@ if(window.location.href.indexOf('search/?') > -1){
   //   }
   // else{
     User.currectLoc = getParameterByName('currectLoc');
-    // console.log(User.currectLoc);
+    console.log(User.currectLoc);
   // }
   // console.log(User.currectLoc);
   if (User.currectLoc !== undefined) {
     userLat=User.currectLoc.split(',')[0];
     userLong=User.currectLoc.split(',')[1];
+    User.currectLoc = {lat: User.currectLoc.split(',')[0], long: User.currectLoc.split(',')[1]};
   }
   yelpSearchResults=[];
   reducedArray = [];
   resultsArray=[];
+  console.log('User: ');
+  console.log(User);
   $.post( "/search",{searchCrit:User}, function(data) {
     console.log( "success" );
   })
