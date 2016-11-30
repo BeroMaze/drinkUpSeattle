@@ -20,8 +20,9 @@
       directionsDisplay.setPanel(document.getElementById('turnByTurn'));
       console.log('initMap function ran');
       calculateAndDisplayRoute(directionsService, directionsDisplay);
-      document.getElementById('mode').addEventListener('change', function() {
+      $('#mode').on('change', function() {
         $('#turnByTurn').empty();
+        console.log('tbt');
         calculateAndDisplayRoute(directionsService, directionsDisplay);
       });
     }
@@ -31,10 +32,6 @@
 
   function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var selectedMode = document.getElementById('mode').value;
-    console.log('users lat and long');
-    console.log(userLat + " and " + userLong);
-    console.log('location picked id');
-    console.log(locationId);
     directionsService.route({
       origin: userLat + ', ' + userLong,
       destination: locationId,
@@ -83,6 +80,7 @@
       window.history.replaceState(resultsInfo, resultsInfo, resultsInfo);
       $('#mapView').addClass('slideOutUp').removeClass('slideInDown');
       $('#backButton').addClass('flipOutX').removeClass('flipInX');
+      $('#mode').off('change');
       setTimeout(function(){
         $('#mapView').hide();
         $('#backButton').hide();
