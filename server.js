@@ -1,10 +1,12 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 // var config = require ('./scripts/config');
 // var models = require ('./scripts/models');
 var querystring = require('querystring');
 var PORT = process.env.PORT;
+var emailPassword = process.env.PASSWORD;
 var Yelp= require('yelp');
 // var DB = config.DB;
 var searchResults;
@@ -33,6 +35,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/about/', function(req, res) {
+  res.sendFile('index.html', {root:__dirname + '/'});
+});
+
+app.get('/new-edit/', function(req, res) {
   res.sendFile('index.html', {root:__dirname + '/'});
 });
 
@@ -93,7 +99,6 @@ app.post('/resultsMore',function(req,res){
 app.post('/search',function(req,res){
   // console.log(req.body.searchCrit);
   userSearchReq = req.body.searchCrit;
-  console.log('<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>');
   console.log(userSearchReq);
   var searchString = querystring.stringify({terms:userSearchReq.terms, reqNeighborhood:userSearchReq.reqNeighborhood, currectLoc:userSearchReq.currectLoc.lat+','+userSearchReq.currectLoc.long});
   // console.log('the string:');
@@ -138,6 +143,74 @@ app.post('/search',function(req,res){
     res.send(error);
     console.log(error);
   });
+  }
+});
+
+app.post('/locationUpdate', function (req, res) {
+  // console.log(req.body.update);
+  var newLocation = req.body.update;
+  var mailOpts, smtpTrans;
+  var newLocationYelpIds = [];
+  var stringID;
+  //Setup Nodemailer transport, I chose gmail. Create an application-specific password to avoid problems.
+  smtpTrans = nodemailer.createTransport('SMTP', {
+      service: 'Gmail',
+      auth: {
+          user: "cddesignsmailer@gmail.com",
+          pass: emailPassword
+      }
+  });
+  yelp.search(
+    {
+      term:'happy hour '+ newLocation.name,
+      location:'SEATTLE',
+      cll:"47.6097,-122.3331",
+      limit:10
+  }).then(function(data){
+    data.businesses.forEach(function(each) {
+      newLocationYelpIds.push({name:each.name,id:each.id});
+      if (data.businesses.length === newLocationYelpIds.length) {
+        stringID = 'Possible Yelp IDs: <br>'+ JSON.stringify(newLocationYelpIds);
+        sendEmail();
+      }
+    });
+    // console.log(newLocationYelpIds);
+}).catch(function(error){
+  res.send(error);
+  console.log(error);
+});
+
+  //Mail options
+  var hours = '';
+  var stringObject = 'hours: <br>'+ JSON.stringify(newLocation.hours);
+  // console.log(stringObject);
+  function sendEmail() {
+    mailOpts = {
+        from: 'Drink Up Seattle Mailer',
+        to: 'Berning.corey@gmail.com',
+        subject: 'Drink Up Seattle Location Update',
+        html: newLocation.name + '<br><br>' + stringObject + '<br><br>' + stringID
+    };
+    smtpTrans.sendMail(mailOpts, function (error, response) {
+        //Email not sent
+        if (error) {
+          console.log(error);
+          var data = {
+            message: 'Sorry there was an issue.',
+            flag: false
+          };
+          res.send(data);
+        }
+        //Yay!! Email sent
+        else {
+          var data = {
+            message: 'Your updated information has been sent and we will update our database. Thank you for helping update Drink Up Seattle.',
+            flag: true
+          };
+          console.log('sent');
+          res.send(data);
+        }
+    });
   }
 });
 

@@ -22,7 +22,7 @@ var userLat;
 var userLong;
 var entered = false;
 var day;
-var searchLocation; 
+var searchLocation;
 
 function getLocation() {
     if (navigator.geolocation) {

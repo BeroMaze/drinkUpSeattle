@@ -372,6 +372,20 @@ if((window.location.href.indexOf('about') > -1)||(window.location.href.indexOf('
   $('#about-page').show('slow');
 }
 
+if((window.location.href.indexOf('new-edit') > -1)||(window.location.href.indexOf('new-edit/') > -1)){
+  $('#iframeAPIplayer').css('display', 'none');
+  $('#iframeAPIplayer').remove();
+  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  $('.loadingImage').hide();
+  $('.backgroundVid').hide();
+  $('#searchBoxWrapper').hide();
+  $('#outerBox').hide();
+  $('#about-page').hide();
+  $('#addEdit').css('display', 'flex');
+  $('#addEdit').show('slow');
+  sendNewLocation();
+}
+
 if(window.location.href.indexOf('search/?') > -1){
   $('#iframeAPIplayer').css('display', 'none');
   $('#iframeAPIplayer').remove();
@@ -520,11 +534,25 @@ if(window.location.href.indexOf('search/?') > -1){
 
 $('#aboutBut').click(function() {
   /* Act on the event */
-  console.log('clicked');
-  $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
-  $('.loadingImage').hide();
-  $('.backgroundVid').hide();
-  $('#searchBoxWrapper').hide();
-  $('#outerBox').hide();
-  $('#about-page').show('slow');
+  // console.log('clicked');
+  // $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  // $('.loadingImage').hide();
+  // $('.backgroundVid').hide();
+  // $('#searchBoxWrapper').hide();
+  // $('#outerBox').hide();
+  // $('#about-page').show('slow');
+});
+
+$('#newEditBut').click(function(event) {
+  /* Act on the event */
+  // event.preventDefault();
+  // $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
+  // $('.loadingImage').hide();
+  // $('.backgroundVid').hide();
+  // $('#searchBoxWrapper').hide();
+  // $('#outerBox').hide();
+  // $('#about-page').hide();
+  // $('#addEdit').css('display', 'flex');
+  // $('#addEdit').show('slow');
+  // sendNewLocation();
 });
