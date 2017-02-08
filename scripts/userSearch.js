@@ -272,6 +272,7 @@ if(entered === false){
     searchLocation = {lat:User.currectLoc.split(',')[0], long:User.currectLoc.split(',')[1]};
   })
     .done(function(data) {
+      $('#siteseal').hide();
       $('#resultsOuterBox').show();
       // $('#searchIcon').hide();
       if(window.location.href.indexOf('search') <= -1){
