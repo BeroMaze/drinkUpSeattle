@@ -370,6 +370,7 @@ if((window.location.href.indexOf('about') > -1)||(window.location.href.indexOf('
   $('#outerBox').hide();
   $('#about-page').css('display', 'flex');
   $('#about-page').show('slow');
+  $('#siteseal').hide();
 }
 
 if((window.location.href.indexOf('new-edit') > -1)||(window.location.href.indexOf('new-edit/') > -1)){
@@ -383,12 +384,14 @@ if((window.location.href.indexOf('new-edit') > -1)||(window.location.href.indexO
   $('#about-page').hide();
   $('#addEdit').css('display', 'flex');
   $('#addEdit').show('slow');
+  $('#siteseal').hide();
   sendNewLocation();
 }
 
 if(window.location.href.indexOf('search/?') > -1){
   $('#iframeAPIplayer').css('display', 'none');
   $('#iframeAPIplayer').remove();
+  $('#siteseal').hide();
   User.terms = getParameterByName('terms');
   var mapLocation = getParameterByName('locationID');
   console.log(mapLocation);
@@ -544,6 +547,7 @@ $('#aboutBut').click(function() {
 });
 
 $('#newEditBut').click(function(event) {
+  $('#siteseal').hide();
   /* Act on the event */
   // event.preventDefault();
   // $('body').css('background-image', 'url(' + bgroundImg[Math.floor(Math.random() * bgroundImg.length)] +')');
