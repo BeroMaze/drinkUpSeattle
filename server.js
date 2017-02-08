@@ -196,7 +196,7 @@ app.post('/locationUpdate', function (req, res) {
         if (error) {
           console.log(error);
           var data = {
-            message: 'Sorry there was an issue.',
+            message: 'Sorry, but there was an issue sending your information. Please try resending '+newLocation.name+ ' information again.',
             flag: false
           };
           res.send(data);
@@ -204,7 +204,7 @@ app.post('/locationUpdate', function (req, res) {
         //Yay!! Email sent
         else {
           var data = {
-            message: 'Your updated information has been sent and we will update our database. Thank you for helping update Drink Up Seattle.',
+            message: 'Your updated information for '+newLocation.name+' has been sent and we will update our database. Thank you for helping update DrinkUpSeattle.com.',
             flag: true
           };
           console.log('sent');
