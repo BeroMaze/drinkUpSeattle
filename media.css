@@ -13,6 +13,9 @@
 }
 
 @media (max-width: 927px) {
+  #headerTitle h1{
+    font-size: 1.5em;
+  }
   .resultImg{
     margin: auto;
     margin-bottom: 5%;
@@ -42,6 +45,29 @@
     font-size: .6em;
     margin-left: 3px;
   }*/
+  #addEdit{
+    overflow-y: hidden;
+  }
+  #addEdit h1{
+      font-size: 1em;
+  }
+  #NewHHName{
+    height: 30px;
+    font-size: 1em;
+  }
+  .checkDay{
+    font-size: .5em;
+  }
+  #openToCloseTime select{
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  main{
+    height: 84%;
+  }
+  #newHappyTimes{
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 767px) {

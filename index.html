@@ -67,6 +67,7 @@
       <nav class="nav">
         <ul>
           <!-- <li id='homeBut'>Home</li> -->
+          <a href="/new-edit"><li id='newEditBut' alt='newEdit'>Update Location</li></a>
           <a href="/about"><li id='aboutBut' alt='about'>About</li></a>
         </ul>
       </nav>
@@ -148,6 +149,103 @@
           </div>
         </div>
       </article>
+      <article id="addEdit">
+        <h1>Have a new Happy Hour location or a location that needs updating?</h1>
+        <input id="NewHHName" type="text" name="newHHName" placeholder="Location Name"></br>
+        <section id="newHappyTimes">
+          <form id="TaD1" class="timeAndDay">
+            <p><u>Choose days and the times for those days.</u></p>
+            <div class="CheckBoxDays">
+              <div class="checkDaysBox">
+                <input id="everyDayBox" class="checkBox" type="checkbox" name="everyday" value="">
+                <h4 class="checkDay">Every Day</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="mondayBox" class="checkBox" type="checkbox" name="Monday" value="">
+                <h4 class="checkDay">Monday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="tuesdayBox" class="checkBox" type="checkbox" name="Tuesday" value="">
+                <h4 class="checkDay">Tuesday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="wednesdayBox" class="checkBox" type="checkbox" name="Wednesday" value="">
+                <h4 class="checkDay">Wednesday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="thursdayBox" class="checkBox" type="checkbox" name="Thursday" value="">
+                <h4 class="checkDay">Thursday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="fridayBox" class="checkBox" type="checkbox" name="Friday" value="">
+                <h4 class="checkDay">Friday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="saturdayBox" class="checkBox" type="checkbox" name="Saturday" value="">
+                <h4 class="checkDay">Saturday</h4>
+              </div>
+              <div class="checkDaysBox">
+                <input id="SundayBox" class="checkBox" type="checkbox" name="Sunday" value="">
+                <h4 class="checkDay">Sunday</h4>
+              </div>
+            </div>
+            <div id="openToCloseTime">
+              <select name="openHourTime" id="openHourTime">
+      	         <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option value="5">5</option>
+                 <option value="6">6</option>
+                 <option value="7">7</option>
+                 <option value="8">8</option>
+                 <option value="9">9</option>
+                 <option value="10">10</option>
+                 <option value="11">11</option>
+                 <option value="12">12</option>
+              </select>
+              :
+              <select name="openMinTime" id="openMinTime">
+      	         <option value="00">00</option>
+                 <option value="30">30</option>
+              </select>
+              <select name='openAmPm' id="openAmPm">
+      	         <option value="PM">PM</option>
+                 <option value="AM">AM</option>
+              </select>
+              -
+              <select name="closeHourTime" id="openHourTime">
+      	         <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option value="5">5</option>
+                 <option value="6">6</option>
+                 <option value="7">7</option>
+                 <option value="8">8</option>
+                 <option value="9">9</option>
+                 <option value="10">10</option>
+                 <option value="11">11</option>
+                 <option value="12">12</option>
+              </select>
+              :
+              <select name="closeMinTime" id="openMinTime">
+      	         <option value="00">00</option>
+                 <option value="30">30</option>
+              </select>
+              <select name='closeAmPm' id="openAmPm">
+      	         <option value="PM">PM</option>
+                 <option value="AM">AM</option>
+              </select>
+            </div>
+          </form>
+        </section>
+        <section id="timesButtons">
+          <input id="newHHTime" type="button" name="name" value="Add Happy Hour Time">
+          <input id="sendHHData" type="button" name="name" value="Send Happy Hour Data">
+        </section>
+
+      </article>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -159,6 +257,7 @@
     <script src="/vendors/scripts/iframeAPI.js"></script>
     <script src ="/scripts/happyHourArray.js"></script>
     <script src="/scripts/userSearch.js"></script>
+    <script src="/scripts/newLocation.js"></script>
     <script src="/scripts/events.js"></script>
   </body>
 </html>
