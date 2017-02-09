@@ -75,7 +75,7 @@
     background: url('') center center / cover no-repeat;
   }*/
   body{
-    background-image: url('./images/optimismBrewing.jpg');
+    background-image: url('https://s-media-cache-ak0.pinimg.com/originals/ec/3f/cf/ec3fcfcd08b646977cda2a9573798cbc.jpg');
   }
   #headerTitle{
     font-size: .7em;

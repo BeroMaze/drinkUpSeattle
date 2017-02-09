@@ -327,31 +327,6 @@ happyHour:{
   Saturday: [["16:00"],["18:00"]]
 }, website: 'http://www.highlinerpub.net/daily-specials.html', logo: 'http://www.highlinerpub.net/uploads/8/2/1/7/8217263/header_images/1417805998.jpg'},
 {
-  id: 'the-leary-traveler-seattle',
-  happyHour: {
-    Monday:[["16:00"],["18:00"]],
-    Tuesday:[["16:00"],["18:00"]],
-    Wednesday:[["16:00"],["18:00"]],
-    Thursday:[["16:00"],["18:00"]],
-    Friday:[["16:00"],["18:00"]]
-    },
-  website: 'http://www.learytraveler.com/home',
-  logo: 'https://s3-us-west-2.amazonaws.com/re.leary/logo.icon.lg.png'
-},
-{
-  id: 'ballard-station-public-house-seattle',
-  happyHour: {
-    Sunday:[["16:00","23:00"],["18:00","26:00"]],
-    Monday:[["16:00","23:00"],["18:00","26:00"]],
-    Tuesday:[["16:00","23:00"],["18:00","26:00"]],
-    Wednesday:[["16:00","23:00"],["18:00","26:00"]],
-    Thursday:[["16:00","23:00"],["18:00","26:00"]],
-    Friday:[["16:00"],["18:00"]],
-    },
-  website: 'http://theballardstation.com/',
-  logo: 'http://theballardstation.com/wp-content/themes/BallardStation/images/logo.png'
-},
-{
   id: 'bastille-cafe-and-bar-seattle-2',
   happyHour: {
     Sunday:[["16:30"],["18:00"]],
@@ -518,23 +493,6 @@ happyHour:{
   Friday:[["15:00", "18:00"],["22:00", "25:00"]],
   Saturday: [["15:00", "18:00"],["22:00", "25:00"]]
 }, website: 'http://laislacuisine.com/menus-la-isla-cuisine/', logo: 'http://laislacuisine.com/wp-content/uploads/2013/03/logo.svg'},
-{id: 'the-walrus-and-the-carpenter-seattle',
-happyHour:{
-  Monday:[["16:00"],["18:00"]],
-  Tuesday:[["16:00"],["18:00"]],
-  Wednesday:[["16:00"],["18:00"]],
-  Thursday:[["16:00"],["18:00"]]
-}, website: 'http://www.thewalrusbar.com/menu', logo: 'http://www.thewalrusbar.com/assets/images/walrus-logo.png'},
-{id: 'highliner-public-house-seattle',
-happyHour:{
-  Sunday:[["16:00"],["18:00"]],
-  Monday:[["16:00"],["18:00"]],
-  Tuesday:[["16:00"],["18:00"]],
-  Wednesday:[["16:00"],["18:00"]],
-  Thursday:[["16:00"],["18:00"]],
-  Friday:[["16:00"],["18:00"]],
-  Saturday: [["16:00"],["18:00"]]
-}, website: 'http://www.highlinerpub.net/daily-specials.html', logo: 'http://www.highlinerpub.net/uploads/8/2/1/7/8217263/header_images/1417805998.jpg'},
 {id: 'the-leary-traveler-seattle',
 happyHour:{
   Monday:[["16:00"],["18:00"]],
@@ -543,16 +501,6 @@ happyHour:{
   Thursday:[["16:00"],["18:00"]],
   Friday:[["16:00"],["18:00"]]
 }, website: 'http://www.learytraveler.com/menu', logo: 'https://s3-us-west-2.amazonaws.com/re.leary/logo.png'},
-{id: 'ballard-station-public-house-seattle',
-happyHour:{
-  Sunday:[["16:00"],["19:00"]],
-  Monday:[["16:00"],["19:00"]],
-  Tuesday:[["16:00"],["19:00"]],
-  Wednesday:[["16:00"],["19:00"]],
-  Thursday:[["16:00"],["19:00"]],
-  Friday:[["16:00"],["19:00"]],
-  Saturday: [["16:00"],["19:00"]]
-}, website: 'http://theballardstation.com/', logo: 'http://theballardstation.com/wp-content/themes/BallardStation/images/logo.png'},
 {id: 'the-tin-hat-seattle-2',
 happyHour:{
   Sunday:[["16:00"],["26:00"]],
@@ -563,38 +511,10 @@ happyHour:{
   Friday:[["16:00"],["26:00"]],
   Saturday: [["16:00"],["26:00"]]
 }, website: 'http://www.thestranger.com/locations/24236/tin-hat', logo: ''},
-{
-  id: 'jimmys-on-broadway-seattle',
-  happyHour: {
-    Sunday:[["15:00","21:00"],["18:00","23:00"]],
-    Monday:[["15:00","21:00"],["18:00","23:00"]],
-    Tuesday:[["15:00","21:00"],["18:00","23:00"]],
-    Wednesday:[["15:00","21:00"],["18:00","23:00"]],
-    Thursday:[["15:00","21:00"],["18:00","23:00"]],
-    Friday:[["15:00","21:00"],["18:00","23:00"]],
-    Saturday:[["15:00","21:00"],["18:00","23:00"]]
-    },
-  website: 'http://jimmysonbroadway.com/',
-  logo: ''
-},
 {id: 'honeyhole-seattle',
 happyHour:{
   Monday:[["17:00"],["19:00"]]
 }, website: 'http://thehappyhourfinder.com/us_wa/seattle/honeyhole-sandwiches/', logo: ''},
-{
-  id: 'jimmys-on-broadway-seattle',
-  happyHour: {
-    Sunday:[["15:00","21:00"],["18:00","23:00"]],
-    Monday:[["15:00","21:00"],["18:00","23:00"]],
-    Tuesday:[["15:00","21:00"],["18:00","23:00"]],
-    Wednesday:[["15:00","21:00"],["18:00","23:00"]],
-    Thursday:[["15:00","21:00"],["18:00","23:00"]],
-    Friday:[["15:00","21:00"],["18:00","23:00"]],
-    Saturday:[["15:00","21:00"],["18:00","23:00"]]
-    },
-  website: 'http://jimmysonbroadway.com/',
-  logo: ''
-},
 {id: 'moe-bar-seattle',
 happyHour:{
   Monday:[["15:00"],["19:00"]],
@@ -1625,13 +1545,6 @@ happyHour:{
   Friday:[["15:00"],["18:00"]],
   Saturday: [["15:00"],["18:00"]]
 }, website: 'http://www.olafsballard.com', logo: 'http://static1.squarespace.com/static/5429e094e4b08658bc7ad1a2/t/5429ef39e4b054905b30b00a/1456340610770/?format=1500w'},
-{id: 'the-walrus-and-the-carpenter-seattle',
-happyHour:{
-  Monday:[["16:00"],["18:00"]],
-  Tuesday:[["16:00"],["18:00"]],
-  Wednesday:[["16:00"],["18:00"]],
-  Thursday:[["16:00"],["18:00"]],
-}, website: 'http://www.thewalrusbar.com/uploads/menus/Walrus-Wine-Menu-2.22.16.pdf', logo: 'http://www.thewalrusbar.com/uploads/_800x800_crop_center-center_75/walrus-photo-2.jpg'},
 {id: 'kings-hardware-seattle',
 happyHour:{
   Sunday:[["16:00"],["19:00"]],
