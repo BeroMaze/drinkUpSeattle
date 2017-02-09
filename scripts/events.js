@@ -1,7 +1,7 @@
-// if (location.protocol != 'https:')
-// {
-//  location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-// }
+if (location.protocol != 'https:')
+{
+ location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
 
 var txt = ["Search For....","Queen Anne","Pioneer Square","Sushi", "Micro-Brew","Cocktail Bars","find me a BEER......", "GET ME DRUNK!!!"];
 var timeOut;
