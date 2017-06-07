@@ -1,5 +1,5 @@
 
-# Seattle_happy_Hour_App
+# Seattle_Happy_Hour_App
 
 This app is a Seattle Happy Hour Search Engine. Allowing users to search for local happy hours by:
 * neighborhood
