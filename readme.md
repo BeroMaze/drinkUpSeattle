@@ -10,7 +10,7 @@ Using the users location data as the starting reference point we query the googl
 
 *Contributors Corey Berning, Anthony Casson & Darnell Holder* 
 
-Map and Geolcation data provided by the [Google API](https://developers.google.com/maps/ "Google API")
+Map and Geolocation data provided by the [Google API](https://developers.google.com/maps/ "Google API")
 Business information provided by [Yelp API](https://www.yelp.com/developers/documentation/v2/overview "Yelp API")
 
 Check out the [Beta Site Here](http://www.drinkupseattle.com "Seattle Happy Hour App")
